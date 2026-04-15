@@ -1,46 +1,43 @@
 pipeline {
-agent any
+    agent any
 
-```
-environment {
-    LANG = 'en_US.UTF-8'
-    LC_ALL = 'en_US.UTF-8'
-}
-
-tools {
-    maven 'Maven'
-}
-
-stages {
-
-    stage('Checkout') {
-        steps {
-            git branch: 'main', url: 'https://github.com/MohdHuzaifa-07/MavenAnsibleWebApp1.git'
-        }
+    environment {
+        LANG = 'en_US.UTF-8'
+        LC_ALL = 'en_US.UTF-8'
     }
 
-    stage('Build') {
-        steps {
-            sh 'mvn clean package'
-        }
+    tools {
+        maven 'Maven'
     }
 
-    stage('Archive') {
-        steps {
-            archiveArtifacts artifacts: 'target/*.war', fingerprint: true
+    stages {
+
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/MohdHuzaifa-07/MavenAnsibleWebApp1.git'
+            }
         }
-    }
 
-    stage('Deploy') {
-        steps {
-            sh '''
-            export ANSIBLE_HOST_KEY_CHECKING=False
-            ansible-playbook -i ansible/hosts.ini ansible/playbook.yml
-            '''
+        stage('Build') {
+            steps {
+                sh 'mvn clean package'
+            }
         }
+
+        stage('Archive') {
+            steps {
+                archiveArtifacts artifacts: 'target/*.war', fingerprint: true
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh '''
+                export ANSIBLE_HOST_KEY_CHECKING=False
+                ansible-playbook -i ansible/hosts.ini ansible/playbook.yml
+                '''
+            }
+        }
+
     }
-
-}
-```
-
 }
