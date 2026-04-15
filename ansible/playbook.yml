@@ -6,10 +6,10 @@
     - name: Copy WAR file to Tomcat
       copy:
         src: "../target/MavenAnsibleWebApp1.war"
-        dest: "/opt/tomcat/webapps/MavenAnsibleWebApp1.war"
+        dest: "/var/lib/tomcat9/webapps/MavenAnsibleWebApp1.war"
         remote_src: no
 
     - name: Restart Tomcat
       systemd:
-        name: tomcat
+        name: tomcat9
         state: restarted
